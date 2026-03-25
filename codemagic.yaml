@@ -48,7 +48,7 @@ workflows:
           npx cap build ios \
             --configuration "$XCODE_CONFIGURATION" \
             --scheme "$XCODE_SCHEME" \
-            --xcode-signing-type automatic \
-            --xcode-export-method app-store-connect
+            --xcode-signing-style automatic \
+            --xcode-export-method development
     artifacts:
       - ios/App/output/*.ipa
