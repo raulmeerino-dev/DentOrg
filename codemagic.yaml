@@ -23,7 +23,7 @@ workflows:
       - android/app/build/outputs/apk/debug/app-debug.apk
 
   ios-ipa:
-    name: DentOrg iOS IPA
+    name: DentOrg iOS IPA (AltStore)
     max_build_duration: 120
     instance_type: mac_mini_m2
     environment:
@@ -33,6 +33,7 @@ workflows:
       vars:
         XCODE_SCHEME: "App"
         XCODE_CONFIGURATION: "Release"
+        IPA_NAME: "DentOrg-unsigned.ipa"
     scripts:
       - name: Install dependencies
         script: npm ci
@@ -43,12 +44,22 @@ workflows:
           fi
       - name: Sync Capacitor project
         script: npm run mobile:sync
-      - name: Build IPA (automatic signing)
+      - name: Build unsigned IPA for AltStore
         script: |
-          npx cap build ios \
-            --configuration "$XCODE_CONFIGURATION" \
-            --scheme "$XCODE_SCHEME" \
-            --xcode-signing-style automatic \
-            --xcode-export-method debugging
+          cd ios/App
+          xcodebuild \
+            -workspace App.xcworkspace \
+            -scheme "$XCODE_SCHEME" \
+            -configuration "$XCODE_CONFIGURATION" \
+            -sdk iphoneos \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            build
+
+          mkdir -p Payload
+          cp -R "build/Build/Products/${XCODE_CONFIGURATION}-iphoneos/App.app" Payload/
+          /usr/bin/zip -r "$IPA_NAME" Payload
+          mv "$IPA_NAME" ../../
     artifacts:
-      - ios/App/output/*.ipa
+      - ios/*.ipa
