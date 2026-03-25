@@ -49,6 +49,6 @@ workflows:
             --configuration "$XCODE_CONFIGURATION" \
             --scheme "$XCODE_SCHEME" \
             --xcode-signing-style automatic \
-            --xcode-export-method development
+            --xcode-export-method debugging
     artifacts:
       - ios/App/output/*.ipa
