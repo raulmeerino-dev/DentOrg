@@ -1,0 +1,54 @@
+workflows:
+  android-apk:
+    name: DentOrg Android APK
+    max_build_duration: 60
+    environment:
+      node: 20
+      java: 21
+    scripts:
+      - name: Install dependencies
+        script: npm ci
+      - name: Ensure Android platform exists
+        script: |
+          if [ ! -d "android" ]; then
+            npx cap add android
+          fi
+      - name: Sync Capacitor project
+        script: npm run mobile:sync
+      - name: Build debug APK
+        script: |
+          cd android
+          ./gradlew assembleDebug
+    artifacts:
+      - android/app/build/outputs/apk/debug/app-debug.apk
+
+  ios-ipa:
+    name: DentOrg iOS IPA
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+    environment:
+      node: 20
+      xcode: latest
+      cocoapods: default
+      vars:
+        XCODE_SCHEME: "App"
+        XCODE_CONFIGURATION: "Release"
+    scripts:
+      - name: Install dependencies
+        script: npm ci
+      - name: Ensure iOS platform exists
+        script: |
+          if [ ! -d "ios/App" ]; then
+            npx cap add ios
+          fi
+      - name: Sync Capacitor project
+        script: npm run mobile:sync
+      - name: Build IPA (automatic signing)
+        script: |
+          npx cap build ios \
+            --configuration "$XCODE_CONFIGURATION" \
+            --scheme "$XCODE_SCHEME" \
+            --xcode-signing-type automatic \
+            --xcode-export-method app-store-connect
+    artifacts:
+      - ios/App/output/*.ipa

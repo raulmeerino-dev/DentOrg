@@ -1,0 +1,30 @@
+{
+  "name": "dentorg",
+  "version": "0.1.0",
+  "private": true,
+  "description": "DentOrg MVP - gestion clinica dental unificada",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "mobile:init": "node -e \"console.log('Usa: npm run mobile:init:android o npm run mobile:init:ios (requiere macOS)')\"",
+    "mobile:init:android": "npx cap add android",
+    "mobile:init:ios": "npx cap add ios",
+    "mobile:copy": "npx cap copy",
+    "mobile:sync": "npx cap sync",
+    "mobile:android": "npx cap open android",
+    "mobile:ipa": "npx cap open ios"
+  },
+  "dependencies": {
+    "@capacitor/android": "^7.4.3",
+    "@capacitor/core": "^7.4.3",
+    "@capacitor/ios": "^7.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.4.3",
+    "typescript": "^5.9.2"
+  }
+}

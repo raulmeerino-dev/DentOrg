@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">DentOrg</string>
+    <string name="title_activity_main">DentOrg</string>
+    <string name="package_name">com.dentorg.app</string>
+    <string name="custom_url_scheme">com.dentorg.app</string>
+</resources>
