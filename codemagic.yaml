@@ -61,5 +61,10 @@ workflows:
           cp -R "build/Build/Products/${XCODE_CONFIGURATION}-iphoneos/App.app" Payload/
           /usr/bin/zip -r "$IPA_NAME" Payload
           mv "$IPA_NAME" ../../
+          cd ../../
+          ls -la
+          find . -maxdepth 3 -name "*.ipa"
     artifacts:
+      - '*.ipa'
       - ios/*.ipa
+      - ios/App/*.ipa
